@@ -2,7 +2,7 @@
 
 /** @var yii\web\View $this */
 
-$this->title = 'АСТ- тест';
+$this->title = 'Мероприятия';
 ?>
 <div class="site-index">
 

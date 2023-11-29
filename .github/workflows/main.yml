@@ -1,0 +1,23 @@
+name: Auto commit to GitHub
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.email "artivus@gmail.com"
+        git config --global user.name "artivus2"
+        git add .
+        git commit -m "Auto commit"
+        git push

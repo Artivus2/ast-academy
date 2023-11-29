@@ -20,10 +20,10 @@ class OrganizatorsController extends Controller
         return [
             // 'access' => [
             //     'class' => AccessControl::class,
-            //     'only' => ['logout'],
+            //     'only' => ['index'],
             //     'rules' => [
             //         [
-            //             'actions' => ['logout'],
+            //             'actions' => ['index'],
             //             'allow' => true,
             //             'roles' => ['@'],
             //         ],
@@ -32,7 +32,7 @@ class OrganizatorsController extends Controller
             // 'verbs' => [
             //     'class' => VerbFilter::class,
             //     'actions' => [
-            //         'logout' => ['post'],
+            //         'index' => ['post'],
             //     ],
             // ],
         ];
@@ -49,7 +49,11 @@ class OrganizatorsController extends Controller
    
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->render('error');
+        }
         return $this->render('index');
+        
     }
 
 }

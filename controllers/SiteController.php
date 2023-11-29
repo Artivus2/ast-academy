@@ -8,7 +8,10 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\Events;
+use app\models\Organizators;
+use yii\data\ActiveDataProvider;
+
 
 class SiteController extends Controller
 {
@@ -105,14 +108,22 @@ class SiteController extends Controller
      */
     public function actionEvents()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
+        $dataProvider = new ActiveDataProvider([
+            'query' => Events::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
+        ]);
 
-            return $this->refresh();
-        }
         return $this->render('events', [
-            'model' => $model,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -123,14 +134,22 @@ class SiteController extends Controller
      */
     public function actionOrganizators()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
+        $dataProvider = new ActiveDataProvider([
+            'query' => Organizators::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
+        ]);
 
-            return $this->refresh();
-        }
         return $this->render('organizators', [
-            'model' => $model,
+            'dataProvider' => $dataProvider,
         ]);
     }
 }

@@ -7,8 +7,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\Events;
+use yii\data\ActiveDataProvider;
 
 class EventsController extends Controller
 {
@@ -20,10 +20,10 @@ class EventsController extends Controller
         return [
             // 'access' => [
             //     'class' => AccessControl::class,
-            //     'only' => ['logout'],
+            //     'only' => ['index'],
             //     'rules' => [
             //         [
-            //             'actions' => ['logout'],
+            //             'actions' => ['index'],
             //             'allow' => true,
             //             'roles' => ['@'],
             //         ],
@@ -32,7 +32,7 @@ class EventsController extends Controller
             // 'verbs' => [
             //     'class' => VerbFilter::class,
             //     'actions' => [
-            //         'logout' => ['post'],
+            //         'index' => ['post'],
             //     ],
             // ],
         ];
@@ -49,14 +49,29 @@ class EventsController extends Controller
    
     public function actionIndex()
     {
-        return $this->render('index');
+        if (Yii::$app->user->isGuest) {
+            return $this->render('error');
+        }
+        $dataProvider = new ActiveDataProvider([
+            'query' => Events::find(),
+            /*
+            'pagination' => [
+                'pageSize' => 50
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
+            */
+        ]);
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
+   
     
 
     

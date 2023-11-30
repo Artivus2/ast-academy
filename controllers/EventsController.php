@@ -134,7 +134,7 @@ class EventsController extends Controller
         }
 
         if ($this->request->isPost) {
-            $countFromPost = count(\Yii::$app->request->post('organizators', []));
+            $countFromPost = count(\Yii::$app->request->post('Organizators', []));
             $countFromTable = count($organizators);
             for ($i = $countFromTable; $i<$countFromPost; $i++) {
                 $organizators[] = new Organizators();

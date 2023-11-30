@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             [
                 'class' => DataColumn::class,
-                'attribute' => 'Организаторы',
+                'attribute' => 'Organizators',
                 'value' => function($data) {
                     if (count($data->organizators)) {
                         return implode(',',array_map(function($item){

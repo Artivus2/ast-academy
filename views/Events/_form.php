@@ -32,18 +32,16 @@ use app\models\EventsSearch;
         $data = ArrayHelper::map($datalist,'id','fio');
         echo $form->field($events, 'organizators')->widget(Select2::class, [
            // 'theme' => Select2::THEME_DEFAULT,
-            //'value'      => $events->organizators,
+            'value'      => $events->organizators,
             'hideSearch' => true,
-            'data' => $data
+            'data' => $data,
+            'options' => [
+                'multiple' => true,
+                
+            ]
             
         ]);
     ?>
-
-    <div class="form-group">
-        <?= Html::button('Добавить организатора', ['class' => 'btn btn-secondary', 'name' => 'button', 'value' => 'add_organizators', 
-        'onclick' => "$('[name=events_form]').attr('action','/events/add-organizators" . ($events->isNewRecord ? "" : "?id=" . $events->id) . "');
-        $('[name=events_form]').submit();"]) ?>
-    </div>
 
     <div class="form-group">
         <?= Html::button('Сохранить', ['class' => 'btn btn-success', 'onclick' => "$('[name=events_form]').attr('action','" . ($events->isNewRecord ? "/events/create" 

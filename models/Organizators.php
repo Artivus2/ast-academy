@@ -30,7 +30,8 @@ class Organizators extends \yii\db\ActiveRecord
         return [
             [['fio', 'email'], 'required'],
             [['fio'], 'string', 'max' => 255],
-            [['email'], 'email', 'max' => 60],
+            [['email'], 'email'],
+            [['phone'], 'string', 'max' => 10],
         ];
     }
 
@@ -47,14 +48,15 @@ class Organizators extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Запрос к истории событий.
-     *
-     * @return \yii\db\ActiveQuery|BookAuthorQuery
-     */
-    public function getOrganizators()
+    public function getEvents()
     {
-        return $this->hasMany(EventsHistory::class, ['organizators_id' => 'id']);
+        return $this->hasMany(Events::class, ['id' => 'events_id'])
+            ->viaTable('events_history', ['organizators_id' => 'id']);;
+    }
+
+    public static function find()
+    {
+        return new OrganizatorsQuery(get_called_class());
     }
 
    

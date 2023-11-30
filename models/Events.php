@@ -7,6 +7,7 @@ namespace app\models;
  *
  * @property int $id
  * @property string $title
+ * @property string $description
  * @property string $date
  *
  * @property Events_History[] $Events_History
@@ -29,6 +30,7 @@ class Events extends \yii\db\ActiveRecord
         return [
             [['title'], 'required'],
             [['date'], 'safe'],
+            [['description'], 'string', 'max' => 255],
             
         ];
     }
@@ -42,17 +44,20 @@ class Events extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Название',
             'date' => 'Дата',
+            'description' => 'Описание'
         ];
     }
 
-    /**
-     * Запрос к истории событий.
-     *
-     * @return \yii\db\ActiveQuery|BookAuthorQuery
-     */
-    public function getEvents()
+  
+    public function getOrganizators()
     {
-        return $this->hasMany(EventsHistory::class, ['events_id' => 'id']);
+        return $this->hasMany(Organizators::class, ['id' => 'organizators_id'])
+            ->viaTable('events_history', ['events_id' => 'id']);
+    }
+    
+    public static function find()
+    {
+        return new EventsQuery(get_called_class());
     }
 
   

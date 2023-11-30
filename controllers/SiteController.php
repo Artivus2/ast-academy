@@ -9,8 +9,12 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\Events;
+use app\models\EventsSearch;
 use app\models\Organizators;
+use app\models\OrganizatorsSearch;
+use app\models\EventsHistory;
 use yii\data\ActiveDataProvider;
+
 
 
 class SiteController extends Controller
@@ -108,48 +112,39 @@ class SiteController extends Controller
      */
     public function actionEvents()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Events::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
+        $searchModel = new EventsSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('events', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
+    
     public function actionOrganizators()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Organizators::find(),
-            /*
-            'pagination' => [
-                'pageSize' => 50
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'id' => SORT_DESC,
-                ]
-            ],
-            */
-        ]);
+        // $dataProvider = new ActiveDataProvider([
+        //     'query' => Organizators::find(),
+        //     /*
+        //     'pagination' => [
+        //         'pageSize' => 50
+        //     ],
+        //     'sort' => [
+        //         'defaultOrder' => [
+        //             'id' => SORT_DESC,
+        //         ]
+        //     ],
+        //     */
+        // ]);
+        $searchModel = new OrganizatorsSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('organizators', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+
+        
     }
 }

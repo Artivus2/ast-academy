@@ -64,12 +64,12 @@ class EventsHistory extends \yii\db\ActiveRecord
         return $this->hasOne(Organizators::class, ['id' => 'organizators_id']);
     }
 
-    /**
-     * {@inheritdoc}
-     * @return BookAuthorQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new EventsHistoryQuery(get_called_class());
-    }
+    // /**
+    //  * {@inheritdoc}
+    //  * @return BookAuthorQuery the active query used by this AR class.
+    //  */
+    // public static function find()
+    // {
+    //     return new EventsHistoryQuery(get_called_class());
+    // }
 }

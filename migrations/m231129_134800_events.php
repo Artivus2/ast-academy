@@ -22,14 +22,14 @@ class m231129_134800_events extends Migration
         $this->createTable($this->events, [
             'id' => $this->primaryKey(),
             'title' => $this->string(255)->notNull(),
-            'date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP')
+            'date' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
+            'description' => $this->string(255)
         ]);
 
         $this->createTable($this->events_history, [
             'id' => $this->primaryKey(),
             'events_id' =>  $this->integer(10)->notNull(),
             'organizators_id' => $this->integer(10)->notNull(),
-            'description' => $this->string(255)
         ]);
 
         $this->createTable($this->organizators, [

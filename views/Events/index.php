@@ -18,7 +18,7 @@ use yii\helpers\ArrayHelper;
 $this->title = 'Мероприятия - админка';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="book-index">
+<div class="events-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

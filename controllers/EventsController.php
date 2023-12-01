@@ -8,10 +8,12 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\Events;
+use app\models\EventsHistory;
 use app\models\EventsSearch;
 use app\models\Organizators;
 use app\models\OrganizatorsSearch;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 
 class EventsController extends Controller
 {
@@ -125,8 +127,10 @@ class EventsController extends Controller
     private function getValidatedOrganizatorsFromPost(Events $events = null): array
     {
         $organizators = [];
+
         if ($events) {
             $organizators = $events->organizators;
+            
         }
 
         if (!count($organizators)) {
@@ -134,7 +138,7 @@ class EventsController extends Controller
         }
 
         if ($this->request->isPost) {
-            $countFromPost = count(\Yii::$app->request->post('Organizators', []));
+            $countFromPost = count(\Yii::$app->request->post('organizators', []));
             $countFromTable = count($organizators);
             for ($i = $countFromTable; $i<$countFromPost; $i++) {
                 $organizators[] = new Organizators();
@@ -182,24 +186,61 @@ class EventsController extends Controller
         $events = $this->getValidatedEventsFromPost($id);
         $organizators = $this->getValidatedOrganizatorsFromPost($events);
 
+
         if (!$this->request->isPost) {
             return $this->render('update', [
                 'events' => $events,
                 'organizators' => $organizators,
             ]);
         }
+            // else {
+        //     $organizators =Yii::$app->request->post('organizators');
+        //     EventsHistory::deleteAll(['events_id' => $id]);
+            // foreach ($organizators as $organizator) {
+                   
+            //         $events_history = new EventsHistory();
+            //         $events_history->events_id = $events->id;
+            //         $events_history->organizators_id = organizator->id;
+            //         $events_history->save(false);
+            //     }    
+        
 
-        if ($events->save(false)) {
-            foreach ($organizators as $organizator) {
-                $isNewRecord = $organizator->isNewRecord;
-                $organizator->save(false);
-                if ($isNewRecord) {
-                    $events->link('organizators', $organizator);
+
+
+       
+            
+            // $events_history = EventsHistory::find()->where(['events_id' => $id])->all();
+                    
+            // if ($events_history) {
+                
+            // }
+            
+                
+            
+            //foreach ($organizators as $organizator) {
+
+                //$isNewRecord = $organizator->isNewRecord;
+                //$organizator->save(false);
+                //if ($isNewRecord) {
+                //$events->link('organizators', $organizator);
+                //$events->$organizators->;
+                //}
+            //}
+
+
+            if ($events->save(false)) {
+                foreach ($organizators as $orgs) {
+                    $isNewRecord = $orgs->isNewRecord;
+                    $orgs->save(false);
+                    if ($isNewRecord) {
+                        $events->link('organizators', $orgs);
+                    }
                 }
             }
-        }
+        
 
         return $this->redirect(['view', 'id' => $events->id]);
+        
     }
 
 
@@ -223,7 +264,8 @@ class EventsController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-    
+
+        
 
     
 }

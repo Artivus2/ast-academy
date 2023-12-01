@@ -4,8 +4,8 @@ use yii\helpers\Html;
 
 
 $this->title = 'Обновить мероприятие: ' . $events->title;
-$this->params['breadcrumbs'][] = ['label' => 'Events', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $events->title, 'url' => ['view', 'id' => $events->id]];
+$this->params['breadcrumbs'][] = ['label' => 'Мероприятия', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $events->title, 'url' => ['index', 'id' => $events->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="book-update">

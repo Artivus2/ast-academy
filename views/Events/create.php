@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /** @var \app\models\Author[] $authors */
 
 $this->title = 'Создать мероприятие';
-$this->params['breadcrumbs'][] = ['label' => 'Events', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Мероприятия', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="book-create">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'events' => $events,
-        'organizators' => $organizators,
+        'organizators' => $organizators
     ]) ?>
 
 </div>

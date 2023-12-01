@@ -3,19 +3,40 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
+use kartik\datetime\DateTimePicker;
 use yii\helpers\ArrayHelper;
 use app\models\Organizators;
 use app\models\OrganizatorsSearch;
 use app\models\Events;
 use app\models\EventsSearch;
+use yii\web\JsExpression;
 ?>
 <div class="events-form">
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data', 'name' => 'events_form']]); ?>
 
+
+    <?= $form->field($events, 'id')->textInput(['readonly' => true]) ?>
+
+
     <?= $form->field($events, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($events, 'date')->textInput(['value' => date('Y-m-d')]) ?>
+    <?php
+    echo DateTimePicker::widget([
+    'model' => $events,
+    'attribute' => 'date',
+    'options' => ['placeholder' => 'Введите дату и время..'],
+    'pluginOptions' => [
+        'autoclose' => true,
+        'locale' => [
+            'format' => 'Y-m-d H:i',
+        ],
+
+    ]
+]);
+
+?>
+
 
     <?= $form->field($events, 'description')->textarea(['rows' => 6]) ?>
 
@@ -23,22 +44,19 @@ use app\models\EventsSearch;
     
     <?php
 
-        // foreach ($organizators as $index => $organizator) {
-        //     echo $form->field($organizator, "[$index]fio")->textInput(['maxlength' => true]);
-        //     echo $form->field($organizator, "[$index]email")->textInput(['maxlength' => true]);
-        //     echo $form->field($organizator, "[$index]phone")->textInput(['maxlength' => true]);
-        // }
-        $datalist = Organizators::find()->all();
-        $data = ArrayHelper::map($datalist,'id','fio');
+        
         echo $form->field($events, 'organizators')->widget(Select2::class, [
            // 'theme' => Select2::THEME_DEFAULT,
-            'value'      => $events->organizators,
-            'hideSearch' => true,
-            'data' => $data,
-            'options' => [
-                'multiple' => true,
+        //'model' => $organizators,
+        
+        'attribute' => 'organizators',
+        'hideSearch' => true,
+        'data' => ArrayHelper::map(Organizators::find()->all(),'id','fio'),
+        'options' => [
+        'multiple' => true,
                 
-            ]
+        ],
+        
             
         ]);
     ?>
@@ -50,5 +68,6 @@ use app\models\EventsSearch;
     </div>
 
     <?php ActiveForm::end(); ?>
+    
 
 </div>

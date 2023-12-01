@@ -28,8 +28,8 @@ class EventsHistory extends \yii\db\ActiveRecord
     {
         return [
             [['events_id', 'organizators_id'], 'integer'],
-            [['events_id'], 'exist', 'skipOnError' => true, 'targetClass' => Author::class, 'targetAttribute' => ['events_id' => 'id']],
-            [['organizators_id'], 'exist', 'skipOnError' => true, 'targetClass' => Book::class, 'targetAttribute' => ['organizators_id' => 'id']],
+            [['events_id'], 'exist', 'skipOnError' => true, 'targetClass' => Organizators::class, 'targetAttribute' => ['events_id' => 'id']],
+            [['organizators_id'], 'exist', 'skipOnError' => true, 'targetClass' => Events::class, 'targetAttribute' => ['organizators_id' => 'id']],
         ];
     }
 
@@ -47,7 +47,7 @@ class EventsHistory extends \yii\db\ActiveRecord
     /**
      * 
      *
-     * @return \yii\db\ActiveQuery|AuthorQuery
+     * @return \yii\db\ActiveQuery|OrganizatorsQuery
      */
     public function getEvents()
     {
@@ -57,19 +57,16 @@ class EventsHistory extends \yii\db\ActiveRecord
     /**
      * 
      *
-     * @return \yii\db\ActiveQuery|BookQuery
+     * @return \yii\db\ActiveQuery|EventsQuery
      */
     public function getOrganizators()
     {
         return $this->hasOne(Organizators::class, ['id' => 'organizators_id']);
     }
 
-    // /**
-    //  * {@inheritdoc}
-    //  * @return BookAuthorQuery the active query used by this AR class.
-    //  */
-    // public static function find()
-    // {
-    //     return new EventsHistoryQuery(get_called_class());
-    // }
+    
+    public static function find()
+    {
+        return new EventsHistoryQuery(get_called_class());
+    }
 }

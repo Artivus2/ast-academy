@@ -15,6 +15,9 @@ Thumbs.db
 # composer vendor dir
 /vendor
 
+# composer widgets dir
+/widgets
+
 # yii config dir
 /config
 
@@ -33,5 +36,6 @@ tests/_output/*
 tests/_support/_generated
 
 #vagrant folder
-/.vagrant
+/vagrant
+
 

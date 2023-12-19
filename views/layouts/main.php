@@ -1,71 +1,117 @@
 <?php
 
-/** @var yii\web\View $this */
-/** @var string $content */
+/* @var $this \yii\web\View */
+/* @var $content string */
 
-use app\assets\AppAsset;
 use app\widgets\Alert;
-use yii\bootstrap5\Breadcrumbs;
-use yii\bootstrap5\Html;
-use yii\bootstrap5\Nav;
-use yii\bootstrap5\NavBar;
+use yii\helpers\Html;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\widgets\Breadcrumbs;
+use app\assets\AppAsset;
 
 AppAsset::register($this);
-
-$this->registerCsrfMetaTags();
-$this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
-$this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no']);
-$this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
-$this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
-$this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>" class="h-100">
+<html lang="<?= Yii::$app->language ?>">
 <head>
+    <meta charset="<?= Yii::$app->charset ?>">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="d-flex flex-column h-100">
+<body>
 <?php $this->beginBody() ?>
 
-<header id="header">
+<div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'АСТ - Академия',
+        'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
-        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+        'options' => [
+            'class' => 'navbar-inverse navbar-fixed-top',
+        ],
     ]);
-    
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
+        'options' => ['class' => 'navbar-nav navbar-right'],
+		'encodeLabels' => false,
         'items' => [
-            Yii::$app->user->isGuest ? ['label' => 'Мероприятия', 'url' => ['/site/events']] : ['label' => 'Мероприятия', 'url' => ['/events']],
-            Yii::$app->user->isGuest ? ['label' => 'Организаторы', 'url' => ['/site/organizators']] : ['label' => 'Организаторы', 'url' => ['/organizators']],
-            Yii::$app->user->isGuest ? ['label' => 'Вход', 'url' => ['/site/login']] : '<li class="nav-item">'.Html::beginForm(['/site/logout']).Html::submitButton(
-                'Выход (' . Yii::$app->user->identity->username . ')', ['class' => 'nav-link btn btn-link logout']) . Html::endForm() . '</li>'
-        ]
+			[
+				'visible' => !Yii::$app->user->isGuest,
+				'label' => 'Пользователи',
+				'items' => [
+					'<div  class="dropdown-header">Клиенты</div >',
+					['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-user"></span> Список клиентов', 'url' => ['/admin/users/index']],
+					['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-down"></span> История пополнений', 'url' => ['/admin/payment-increases']],
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-up"></span> Заявки на вывод средств', 'url' => ['/admin/payment-outputs']],
+
+                    '<div  class="dropdown-header">Партнеры</div >',
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-user"></span> Список партнеров', 'url' => ['/admin/affiliate-users/index']],
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-down"></span> Поступление средств', 'url' => ['/admin/affiliate-payment-increases']],
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-up"></span> Вывод средств', 'url' => ['/admin/affiliate-payment-outputs']],
+
+                    '<div  class="dropdown-header">Управление доступом</div >',
+					['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-lock"></span> Маршруты', 'url' => ['/rbac/route']],
+					['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-lock"></span> Доступы', 'url' => ['/rbac/permission']],
+					['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-lock"></span> Роли', 'url' => ['/rbac/role']],
+                ]
+			],
+            [
+                'visible' => !Yii::$app->user->isGuest,
+                'label' => 'Партнерская программа',
+                'items' => [
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Партнерские ссылки', 'url' => ['/admin/affiliate-invitation']],
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Типы партнерки', 'url' => ['/admin/affiliate-offers']],
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Способы вывода', 'url' => ['/admin/affiliate-wallet-types']],
+                ],
+            ],
+            [
+                'visible' => !Yii::$app->user->isGuest,
+                'label' => 'Терминал',
+                'items' => [
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Активы', 'url' => ['/admin/charts']],
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Категории', 'url' => ['/admin/charts-categories']],
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'История ставкок', 'url' => ['/admin/deals']],
+
+                ],
+            ],
+			[
+				'visible' => !Yii::$app->user->isGuest,
+				'label' => 'Другое',
+				'items' => [
+					['visible' => !Yii::$app->user->isGuest, 'label' => 'Настройки', 'url' => ['/admin/apps']],
+					['visible' => !Yii::$app->user->isGuest, 'label' => 'Вид платежей', 'url' => ['/admin/payment-types']],
+					['visible' => !Yii::$app->user->isGuest, 'label' => 'Промокоды', 'url' => ['/admin/promocodes']],
+
+				],
+			],
+            Yii::$app->user->isGuest ? (
+                ['label' => 'Авторизоваться', 'url' => ['/site/login']]
+            ) : (
+                ['label' => 'Выход (' . Yii::$app->user->identity->email . ')', 'url' => ['/site/logout']]
+            )
+        ],
     ]);
     NavBar::end();
     ?>
-</header>
 
-<main id="main" class="flex-shrink-0" role="main">
     <div class="container">
-        <?php if (!empty($this->params['breadcrumbs'])): ?>
-            <?= Breadcrumbs::widget(['links' => $this->params['breadcrumbs']]) ?>
-        <?php endif ?>
+        <?= Breadcrumbs::widget([
+            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
-</main>
+</div>
 
-<footer id="footer" class="mt-auto py-3 bg-light">
+<footer class="footer">
     <div class="container">
-        <div class="row text-muted">
-            <div class="col-md-6 text-center text-md-start">&copy; АСТ Академия <?= date('Y') ?></div>
-            <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
-        </div>
+        <p class="pull-left">&copy; <?= date('Y') ?></p>
+
+        <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
 

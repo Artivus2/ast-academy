@@ -1,19 +1,19 @@
 <?php
 
-namespace app\models\form;
+namespace app\models;
 
 use Yii;
 use yii\base\Model;
-use app\models\User;
 
 /**
  * LoginForm is the model behind the login form.
  *
- * @property-read User|null $user This property is read-only.
+ * @property-read User|null $user
  *
  */
 class LoginForm extends Model
 {
+    public $username;
     public $email;
     public $password;
     public $rememberMe = true;
@@ -29,7 +29,6 @@ class LoginForm extends Model
         return [
             // username and password are both required
             [['email', 'password'], 'required'],
-            ['email', 'email'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
@@ -50,7 +49,7 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Неверный пароль.');
+                $this->addError($attribute, 'Incorrect username or password.');
             }
         }
     }
@@ -62,39 +61,26 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-			
-            $user = $this->getUser();
-
-            if ($user) {
-				$user->token = Yii::$app->getSecurity()->generateRandomString();
-				$user->save();
-			}
-			
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
         }
         return false;
     }
 
     /**
-     * Finds user by [[phone]]
+     * Finds user by [[username]]
      *
      * @return User|null
      */
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = Users::findOne(["email" => $this->email]);
+            if(isset($this->phone) && $this->phone != "") {
+                $this->_user = Users::find()->where(["phone" => preg_replace('/[^0-9]/', '', $this->phone)])->one();
+            } else if(isset($this->email) && $this->email != "") {
+                $this->_user = Users::find()->where(["email" => $this->email])->one();
+            }
         }
 
         return $this->_user;
-    }
-	
-	public function attributeLabels()
-    {
-        return [
-            'email' => 'Электронная почта',
-            'password' => 'Пароль',
-            'rememberMe' => 'Запомнить меня',
-        ];
     }
 }

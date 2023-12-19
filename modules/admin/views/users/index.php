@@ -26,30 +26,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             //'token',
             [
-                'attribute'=> 'verify',
+                'attribute'=> 'verify_status',
                 'filter' => [ "0"=> "Нет", "1"=>"Да"],
                 'content'=>function($data) {
-                    return $data->verify ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>';
+                    return $data->verify_status ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>';
                 }
             ],
             //'telegram',
-            'name',
-            'surname',
+            'first_name',
+            'last_name',
             'country',
-            [
-                'attribute'=>'dollars',
-                'label' => 'Счет',
-                'content'=>function($data){
-                    return $data->wallet->dollars;
-                }
-            ],
-            [
-                'attribute'=>'virtual_dollars',
-                'label' => 'Демо-счет',
-                'content'=>function($data){
-                    return $data->wallet->virtual_dollars;
-                }
-            ],
+            // [
+            //     'attribute'=>'dollars',
+            //     'label' => 'Счет',
+            //     'content'=>function($data){
+            //         return $data->wallet->dollars;
+            //     }
+            // ],
+            // [
+            //     'attribute'=>'virtual_dollars',
+            //     'label' => 'Демо-счет',
+            //     'content'=>function($data){
+            //         return $data->wallet->virtual_dollars;
+            //     }
+            // ],
             //'city',
             //'password',
             //'is_admin',
@@ -58,10 +58,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //'banned',
             //'last_visit_time',
             [
-                'attribute'=>'create_date',
+                'attribute'=>'created_at',
                 'filter' => \janisto\timepicker\TimePicker::widget([
                     'model'=>$searchModel,
-                    'attribute'  => 'create_date',
+                    'attribute'  => 'created_at',
                     'mode' => 'date',
                 ]),
             ],

@@ -24,18 +24,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'uid',
-            'wallet.dollars',
-            'wallet.virtual_dollars',
+            // 'wallet.dollars',
+            // 'wallet.virtual_dollars',
             'email:email',
             [
-                'attribute'=> 'verify',
+                'attribute'=> 'verify_status',
                 'format' => 'raw',
                 'value' => function($data){
-                    return $data->verify ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>';
+                    return $data->verify_status ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>';
                 }
             ],
-            'name',
-            'surname',
+            'first_name',
+            'last_name',
             'country',
             'city',
             'affiliate_invitation_id',
@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'last_visit_time',
-            'create_date',
+            'created_at',
             'delete_date',
             'comment',
         ],

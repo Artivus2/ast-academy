@@ -19,9 +19,9 @@ class UsersSearch extends Users
     public function rules()
     {
         return [
-            [['id', 'app_id', 'verify', 'is_admin', 'affiliate_invitation_id', 'deleted', 'banned'], 'integer'],
+            [['id', 'app_id', 'verify_status', 'is_admin', 'affiliate_invitation_id', 'deleted', 'banned'], 'integer'],
             [["dollars", "virtual_dollars"], "number"],
-            [['uid', 'email', 'telegram', 'name', 'surname', 'country', 'city', 'last_visit_time', 'create_date'], 'safe'],
+            [['uid', 'email', 'telegram', 'first_name', 'last_name', 'country', 'city', 'last_visit_time', 'created_at'], 'safe'],
         ];
     }
 
@@ -54,23 +54,23 @@ class UsersSearch extends Users
         $dataProvider->setSort([
             'attributes' => [
                 'id',
-                'verify',
+                'verify_status',
                 'uid',
                 'email',
-                'name',
-                'surname',
+                'first_name',
+                'last_name',
                 'country',
-                'create_date',
-                'dollars' => [
-                    'asc' => ['wallet.dollars' => SORT_ASC],
-                    'desc' => ['wallet.dollars' => SORT_DESC],
-                    'default' => SORT_ASC
-                ],
-                'virtual_dollars' => [
-                    'asc' => ['wallet.virtual_dollars' => SORT_ASC],
-                    'desc' => ['wallet.virtual_dollars' => SORT_DESC],
-                    'default' => SORT_ASC
-                ],
+                'created_at',
+                // 'dollars' => [
+                //     'asc' => ['wallet.dollars' => SORT_ASC],
+                //     'desc' => ['wallet.dollars' => SORT_DESC],
+                //     'default' => SORT_ASC
+                // ],
+                // 'virtual_dollars' => [
+                //     'asc' => ['wallet.virtual_dollars' => SORT_ASC],
+                //     'desc' => ['wallet.virtual_dollars' => SORT_DESC],
+                //     'default' => SORT_ASC
+                // ],
             ]
         ]);
 
@@ -85,10 +85,10 @@ class UsersSearch extends Users
         // grid filtering conditions
         $query->andFilterWhere([
             'users.id' => $this->id,
-            'dollars' => $this->dollars,
-            'virtual_dollars' => $this->virtual_dollars,
+            // 'dollars' => $this->dollars,
+            // 'virtual_dollars' => $this->virtual_dollars,
             'app_id' => $this->app_id,
-            'verify' => $this->verify,
+            'verify_status' => $this->verify_status,
             'is_admin' => $this->is_admin,
             'affiliate_invitation_id' => $this->affiliate_invitation_id,
             'deleted' => $this->deleted,
@@ -104,10 +104,10 @@ class UsersSearch extends Users
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'token', $this->token])
             ->andFilterWhere(['like', 'telegram', $this->telegram])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'surname', $this->surname])
+            ->andFilterWhere(['like', 'first_name', $this->first_name])
+            ->andFilterWhere(['like', 'last_name', $this->last_name])
             ->andFilterWhere(['like', 'country', $this->country])
-            ->andFilterWhere(['like', 'create_date', $this->create_date])
+            ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'city', $this->city])
             ->andFilterWhere(['like', 'password', $this->password])
             ->andFilterWhere(['like', 'confirm_email_token', $this->confirm_email_token])

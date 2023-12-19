@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=greenavi_site',
-    'username' => 'greenavi_user',
-    'password' => 'tb7x3Er5PQ',
+    'dsn' => 'mysql:host=10.8.12.118;dbname=greenavi',
+    'username' => 'greenavi',
+    'password' => 'Adm142!@',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)

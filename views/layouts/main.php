@@ -32,11 +32,11 @@ AppAsset::register($this);
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-inverse navbar-fixed-top navbar-custom',
         ],
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
+        'options' => ['class' => 'navbar-nav navbar-right navbar-custom'],
 		'encodeLabels' => false,
         'items' => [
 			[
@@ -45,49 +45,63 @@ AppAsset::register($this);
 				'items' => [
 					'<div  class="dropdown-header">Клиенты</div >',
 					['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-user"></span> Список клиентов', 'url' => ['/admin/users/index']],
-					['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-down"></span> История пополнений', 'url' => ['/admin/payment-increases']],
-                    ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-up"></span> Заявки на вывод средств', 'url' => ['/admin/payment-outputs']],
+					// ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-down"></span> История пополнений', 'url' => ['/admin/payment-increases']],
+                    // ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-up"></span> Заявки на вывод средств', 'url' => ['/admin/payment-outputs']],
 
-                    '<div  class="dropdown-header">Партнеры</div >',
-                    ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-user"></span> Список партнеров', 'url' => ['/admin/affiliate-users/index']],
-                    ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-down"></span> Поступление средств', 'url' => ['/admin/affiliate-payment-increases']],
-                    ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-up"></span> Вывод средств', 'url' => ['/admin/affiliate-payment-outputs']],
+                    // '<div  class="dropdown-header">Партнеры</div >',
+                    // ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-user"></span> Список партнеров', 'url' => ['/admin/affiliate-users/index']],
+                    // ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-down"></span> Поступление средств', 'url' => ['/admin/affiliate-payment-increases']],
+                    // ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-collapse-up"></span> Вывод средств', 'url' => ['/admin/affiliate-payment-outputs']],
 
-                    '<div  class="dropdown-header">Управление доступом</div >',
-					['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-lock"></span> Маршруты', 'url' => ['/rbac/route']],
-					['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-lock"></span> Доступы', 'url' => ['/rbac/permission']],
-					['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-lock"></span> Роли', 'url' => ['/rbac/role']],
+                    // '<div  class="dropdown-header">Управление доступом</div >',
+					// ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-lock"></span> Маршруты', 'url' => ['/rbac/route']],
+					// ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-lock"></span> Доступы', 'url' => ['/rbac/permission']],
+					// ['visible' => !Yii::$app->user->isGuest, 'label' => '<span class="glyphicon glyphicon-lock"></span> Роли', 'url' => ['/rbac/role']],
                 ]
 			],
-            [
+            [   '<div  class="dropdown-header">P2P Торговля</div >',
                 'visible' => !Yii::$app->user->isGuest,
-                'label' => 'Партнерская программа',
+                'label' => 'P2P Торговля',
                 'items' => [
-                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Партнерские ссылки', 'url' => ['/admin/affiliate-invitation']],
-                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Типы партнерки', 'url' => ['/admin/affiliate-offers']],
-                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Способы вывода', 'url' => ['/admin/affiliate-wallet-types']],
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Список ордеров P2P', 'url' => ['/admin/p2p/index']],
                 ],
             ],
-            [
+            [   '<div  class="dropdown-header">B2B Торговля</div >',
                 'visible' => !Yii::$app->user->isGuest,
-                'label' => 'Терминал',
+                'label' => 'B2B Торговля',
                 'items' => [
-                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Активы', 'url' => ['/admin/charts']],
-                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Категории', 'url' => ['/admin/charts-categories']],
-                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'История ставкок', 'url' => ['/admin/deals']],
-
+                    ['visible' => !Yii::$app->user->isGuest, 'label' => 'Список ордеров B2B', 'url' => ['/admin/b2b/index']],
                 ],
             ],
-			[
-				'visible' => !Yii::$app->user->isGuest,
-				'label' => 'Другое',
-				'items' => [
-					['visible' => !Yii::$app->user->isGuest, 'label' => 'Настройки', 'url' => ['/admin/apps']],
-					['visible' => !Yii::$app->user->isGuest, 'label' => 'Вид платежей', 'url' => ['/admin/payment-types']],
-					['visible' => !Yii::$app->user->isGuest, 'label' => 'Промокоды', 'url' => ['/admin/promocodes']],
+            // [
+            //     'visible' => !Yii::$app->user->isGuest,
+            //     'label' => 'Партнерская программа',
+            //     'items' => [
+            //         ['visible' => !Yii::$app->user->isGuest, 'label' => 'Партнерские ссылки', 'url' => ['/admin/affiliate-invitation']],
+            //         ['visible' => !Yii::$app->user->isGuest, 'label' => 'Типы партнерки', 'url' => ['/admin/affiliate-offers']],
+            //         ['visible' => !Yii::$app->user->isGuest, 'label' => 'Способы вывода', 'url' => ['/admin/affiliate-wallet-types']],
+            //     ],
+            // ],
+            // [
+            //     'visible' => !Yii::$app->user->isGuest,
+            //     'label' => 'Терминал',
+            //     'items' => [
+            //         ['visible' => !Yii::$app->user->isGuest, 'label' => 'Активы', 'url' => ['/admin/charts']],
+            //         ['visible' => !Yii::$app->user->isGuest, 'label' => 'Категории', 'url' => ['/admin/charts-categories']],
+            //         ['visible' => !Yii::$app->user->isGuest, 'label' => 'История ставкок', 'url' => ['/admin/deals']],
 
-				],
-			],
+            //     ],
+            // ],
+			// [
+			// 	'visible' => !Yii::$app->user->isGuest,
+			// 	'label' => 'Другое',
+			// 	'items' => [
+			// 		['visible' => !Yii::$app->user->isGuest, 'label' => 'Настройки', 'url' => ['/admin/apps']],
+			// 		['visible' => !Yii::$app->user->isGuest, 'label' => 'Вид платежей', 'url' => ['/admin/payment-types']],
+			// 		['visible' => !Yii::$app->user->isGuest, 'label' => 'Промокоды', 'url' => ['/admin/promocodes']],
+
+			// 	],
+			// ],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Авторизоваться', 'url' => ['/site/login']]
             ) : (
@@ -111,7 +125,7 @@ AppAsset::register($this);
     <div class="container">
         <p class="pull-left">&copy; <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-right">Разработка artivus</p>
     </div>
 </footer>
 

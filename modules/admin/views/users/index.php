@@ -13,7 +13,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="users-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
+    <p>
+        <?= Html::a('Создать пользователя', ['create'], ['class' => 'btn btn-success', 'style' => Yii::$app->user->isGuest ? 'display:none' : 'display:inline-block']) ?>
+    </p>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
@@ -27,9 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
             //'token',
             [
                 'attribute'=> 'verify_status',
-                'filter' => [ "0"=> "Нет", "1"=>"Да"],
+                // 'filter' => [ "0"=> "Нет", "1"=>"Да"],
                 'content'=>function($data) {
-                    return $data->verify_status ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>';
+                    return $data->verify_status ? 'Пройдена' : 'Не пройдена';
                 }
             ],
             //'telegram',
@@ -65,31 +67,23 @@ $this->params['breadcrumbs'][] = $this->title;
                     'mode' => 'date',
                 ]),
             ],
-            //'confirm_email:email',
-            //'confirm_email_token:email',
-            //'confirm_reset_expire',
-            //'confirm_reset_token',
-            //'confirm_delete_expire',
-            //'confirm_delete_token',
-            //'delete_date',
+
             
-			[
+			[   
 				'class' => 'yii\grid\ActionColumn',
-				'template' => '{view} {password} {access} {wallet} {update} {delete} ',
+				'header' => 'Действия',
+                'contentOptions' => ['style' => 'display: flex'],
+                'template' => '{view} {password} {wallet} {update} {delete} ',
 				'buttons' => [
-					'access' => function ($url,$model) {
-						return Html::a(
-						'<span class="glyphicon glyphicon-cog"></span>', 
-						['/rbac/assignment/view', 'id' => $model->id]);
-					},
+					
                     'wallet' => function ($url,$model) {
                         return Html::a(
-                            '<span class="glyphicon glyphicon-piggy-bank"></span>',
+                            '<span class="wallet-icon" hint="Кошелек"></span>',
                             $url);
                     },
 					'password' => function ($url,$model,$key) {
 						return Html::a(
-						'<span class="glyphicon glyphicon-lock"></span>', 
+						'<span class="password-icon"></span>', 
 						$url);
 					},
 				],

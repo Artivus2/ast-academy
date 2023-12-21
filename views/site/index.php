@@ -2,5 +2,5 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'OptionHold';
+$this->title = 'Админка GREENAVI.COM';
 ?>

@@ -24,8 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'uid',
-            // 'wallet.dollars',
-            // 'wallet.virtual_dollars',
+            'wallet.balance',
+            'wallet.chart_id',
             'email:email',
             [
                 'attribute'=> 'verify_status',

@@ -9,6 +9,7 @@ use app\models\search\UsersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
 
 /**
  * UsersController implements the CRUD actions for Users model.
@@ -100,14 +101,30 @@ class UsersController extends Controller
     {
         $model = $this->findModel($id);
 
-        $wallet = Wallet::findOne(["user_id" => $model->id]);
-        if ($wallet->load(Yii::$app->request->post()) && $wallet->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+        $wallet = Wallet::find()->where(['user_id' => $model->id]);
+        
 
+        if (!$wallet) {
+            $data = 'Нет доступных кошельков на балансе';
+        } else {
+            $data = new ActiveDataProvider([
+                'query' => $wallet,
+                'pagination' => [
+                    'pageSize' => 10,
+              ],
+                //  'sort' => [
+                //       'defaultOrder' => [
+                //       'chart_id' => SORT_DESC, //сортировка по нужному id
+                //    ]
+                //   ],
+                ]);
+    
+        }
+        
+        
         return $this->render('wallet', [
             'model' => $model,
-            'wallet' => $wallet
+            'wallet' => $data
         ]);
     }
 
@@ -120,7 +137,7 @@ class UsersController extends Controller
      */
     public function actionDelete($id)
     {
-        //$this->findModel($id)->delete();
+        $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }

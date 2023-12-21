@@ -9,8 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property int $user_id
- * @property float $dollars
- * @property float $virtual_dollars
+ * @property float $balance
+ * @property float $chart_id
  */
 class Wallet extends \yii\db\ActiveRecord
 {
@@ -28,9 +28,9 @@ class Wallet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'virtual_dollars'], 'required'],
+            [['user_id'], 'required'],
             [['user_id'], 'integer'],
-            [['dollars', 'virtual_dollars'], 'number'],
+            [['balance'], 'number'],
         ];
     }
 
@@ -42,8 +42,24 @@ class Wallet extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'Пользователь',
-            'dollars' => 'Счет',
-            'virtual_dollars' => 'Демо-счет',
+            'balance' => 'Баланс',
+            'chart_id' => 'ИД криптовалюты',
+            'type' => 'Тип кошелька',
         ];
+    }
+
+    public function getChart()
+    {
+        return $this->hasOne(Chart::class, ['id' => 'chart_id']);
+    }
+
+    public function getWalletType()
+    {
+        return $this->hasOne(WalletType::class, ['id' => 'type']);
+    }
+    
+    public function getUser()
+    {
+        return $this->hasOne(Users::class, ['id' => 'user_id']);
     }
 }

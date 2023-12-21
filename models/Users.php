@@ -12,10 +12,10 @@ use Yii;
  * @property int $app_id
  * @property string $email
  * @property string|null $token
- * @property int $verify
+ * @property int $verify_status
  * @property string|null $telegram
- * @property string|null $name
- * @property string|null $surname
+ * @property string|null $first_name
+ * @property string|null $last_name
  * @property string|null $country
  * @property string|null $city
  * @property string $password
@@ -85,7 +85,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['uid', 'app_id', 'email', 'password'], 'required'],
+            [['app_id', 'email', 'password'], 'required'],
             [['app_id', 'verify_status', 'is_admin', 'affiliate_invitation_id', 'deleted', 'banned'], 'integer'],
             [['last_visit_time', 'created_at', 'confirm_email', 'confirm_reset_expire', 'confirm_delete_expire', 'delete_date'], 'safe'],
             [['uid', 'email', 'token', 'first_name', 'last_name', 'country', 'city', 'password'], 'string', 'max' => 255],
@@ -95,10 +95,10 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         ];
     }
 
-    public function getWallet()
-    {
-        return $this->hasOne(Wallet::className(), ['user_id' => 'id']);
-    }
+    // public function getWallet()
+    // {
+    //     return $this->hasOne(Wallet::className(), ['user_id' => 'id']);
+    // }
 
     /**
      * {@inheritdoc}
@@ -134,18 +134,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'comment' => 'Комментарий', //add
         ];
 
-        // 'id' => 'ID',
-        // 'phone' => 'Номер телефона',
-        // 'email' => 'Электронная почта',
-        // 'password' => 'Пароль',
-        // 'image' => 'Аватар',
-        // 'login' => 'Логин',
-        // 'telegram' => 'Телеграм',
-        // 'chart_id' => 'Криптовалюта',
-        // 'currency_id' => 'Валюта',
-        // 'verify_status' => 'Верификация',
-        // 'token' => 'Token',
-        // 'created_at' => 'Дата создания',
+      
     }
     
     
@@ -173,7 +162,32 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return $this->token === $authKey;
     }
+
+    public function getWallet() {
+        return $this->hasMany(Wallet::class, ['user_id' => 'id']);
+    }
 	
+    public function getChart()
+    {
+        return $this->hasOne(Chart::class, ['id' => 'chart_id']);
+    }
+
+    public function getAffiliates()
+    {
+        return $this->hasMany(Affiliate::class, ['user_id' => 'id']);
+    }
+
+
+    public function getCurrency()
+    {
+        return $this->hasOne(Currency::class, ['id' => 'currency_id']);
+    }
+
+    public function getAuthTokens()
+    {
+        return $this->hasMany(AuthToken::class, ['user_id' => 'id']);
+    }
+
     public function validatePassword($password)
     {
 		if(!$this->password) return false;
